@@ -3280,6 +3280,21 @@ class w90(object):
         self.red_cen=_cart_to_red((self.lat[0],self.lat[1],self.lat[2]),self.xyz_cen)
 
 
+    def read_geom(self):
+        rf = open(self.wan90_wout, "r")
+        lines = rf.readlines()
+        lattice = np.zeros((3, 3))
+        n = len(lines)
+        orb_pos = []
+        for i in range(3):
+            lattice[i, :] = np.array(list(map(float, lines[i].split())))
+
+        for i in range(4, n):
+            pos = tuple(map(float, lines[i].split()))
+            orb_pos.append(pos)
+        self.norb = len(orb_pos)
+        return lattice, orb_pos
+
     def model(self,zero_energy=0.0,min_hopping_norm=None,max_distance=None,ignorable_imaginary_part=None):
         """
 
@@ -3349,7 +3364,7 @@ class w90(object):
         """    
 
         # make the model object
-        tb=tb_model(3,3,self.lat,self.red_cen)
+        tb=tb_model(3,3,self.lat,self.red_cen, nspin=2)
 
         # remember that this model was computed from w90
         tb._assume_position_operator_diagonal=False
