@@ -3168,35 +3168,11 @@ class w90(object):
         self.prefix=prefix
 
         # read in lattice_vectors
-        f=open(self.path+"/"+self.prefix+".win","r")
-        ln=f.readlines()
-        f.close()
+        geom = self.path+"/"+self.prefix+"_geom.dat"
+        
         # get lattice vector
         self.lat=np.zeros((3,3),dtype=float)
-        found=False
-        for i in range(len(ln)):
-            sp=ln[i].split()
-            if len(sp)>=2:
-                if sp[0].lower()=="begin" and sp[1].lower()=="unit_cell_cart":
-                    # get units right
-                    if ln[i+1].strip().lower()=="bohr":
-                        pref=0.5291772108
-                        skip=1
-                    elif ln[i+1].strip().lower() in ["ang","angstrom"]:
-                        pref=1.0
-                        skip=1
-                    else:
-                        pref=1.0
-                        skip=0
-                    # now get vectors
-                    for j in range(3):
-                        sp=ln[i+skip+1+j].split()
-                        for k in range(3):
-                            self.lat[j,k]=float(sp[k])*pref
-                    found=True
-                    break
-        if found==False:
-            raise Exception("Unable to find unit_cell_cart block in the .win file.")
+        self.lat, self.red_cen = self.read_geom(geom)
 
         # read in hamiltonian matrix, in eV
         f=open(self.path+"/"+self.prefix+"_hr.dat","r")
@@ -3260,28 +3236,12 @@ class w90(object):
                 if found_pair==False:
                     raise Exception("Did not find negative R for R = "+R+"!")
 
-        # read in wannier centers
-        f=open(self.path+"/"+self.prefix+"_centres.xyz","r")
-        ln=f.readlines()
-        f.close()
-        # Wannier centers in Cartesian, Angstroms
-        xyz_cen=[]
-        for i in range(2,2+self.num_wan):
-            sp=ln[i].split()
-            if sp[0]=="X":
-                tmp=[]
-                for j in range(3):
-                    tmp.append(float(sp[j+1]))
-                xyz_cen.append(tmp)
-            else:
-                raise Exception("Inconsistency in the centres file.")
-        self.xyz_cen=np.array(xyz_cen,dtype=float)
-        # get orbital positions in reduced coordinates
-        self.red_cen=_cart_to_red((self.lat[0],self.lat[1],self.lat[2]),self.xyz_cen)
+        
+        self.xyz_cen=_red_to_cart((self.lat[0],self.lat[1],self.lat[2]),self.red_cen)
 
 
-    def read_geom(self):
-        rf = open(self.wan90_wout, "r")
+    def read_geom(self, wan90_wout):
+        rf = open(wan90_wout, "r")
         lines = rf.readlines()
         lattice = np.zeros((3, 3))
         n = len(lines)
