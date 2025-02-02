@@ -3324,7 +3324,7 @@ class w90(object):
         """    
 
         # make the model object
-        tb=tb_model(3,3,self.lat,self.red_cen)
+        tb=tb_model(3,3,self.lat,self.red_cen, nspin=2)
 
         # remember that this model was computed from w90
         tb._assume_position_operator_diagonal=False

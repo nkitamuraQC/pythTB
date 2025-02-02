@@ -15,5 +15,5 @@ my_model=tb_model(1,1,lat,orb,nspin=2)
 my_model.set_onsite(-10., 0)
 my_model.set_hop(-1., 0, 0, [1])
 
-print(my_model._site_energies.shape)
-print(my_model._hoppings.shape)
+print(my_model._site_energies[:, 1, 1])
+print(my_model._hoppings[0][0].shape)
