@@ -88,7 +88,7 @@ class tb_model(object):
 
     """
 
-    def __init__(self,dim_k,dim_r,lat=None,orb=None,per=None,nspin=1):
+    def __init__(self,dim_k,dim_r,lat=None,orb=None,per=None,nspin=1,input4triqs=True):
 
         # initialize _dim_k = dimensionality of k-space (integer)
         if type(dim_k).__name__!='int':
@@ -3324,7 +3324,7 @@ class w90(object):
         """    
 
         # make the model object
-        tb=tb_model(3,3,self.lat,self.red_cen, nspin=2)
+        tb=tb_model(3,3,self.lat,self.red_cen)
 
         # remember that this model was computed from w90
         tb._assume_position_operator_diagonal=False

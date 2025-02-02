@@ -5,13 +5,13 @@
 # Copyright under GNU General Public License 2010, 2012, 2016
 # by Sinisa Coh and David Vanderbilt (see gpl-pythtb.txt)
 
-from pythtb import * # import TB model class
+from pythtb_respack import * # import TB model class
 import matplotlib.pyplot as plt
 
 # specify model
 lat=[[1.0]]
 orb=[[0.0]]
-my_model=tb_model(1,1,lat,orb)
+my_model=tb_model(1,1,lat,orb,spin=2)
 my_model.set_hop(-1., 0, 0, [1])
 
 # define a path in k-space
