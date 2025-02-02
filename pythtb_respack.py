@@ -88,7 +88,7 @@ class tb_model(object):
 
     """
 
-    def __init__(self,dim_k,dim_r,lat=None,orb=None,per=None,nspin=1,input4triqs=True):
+    def __init__(self,dim_k,dim_r,lat=None,orb=None,per=None,nspin=1,soc=0.):
 
         # initialize _dim_k = dimensionality of k-space (integer)
         if type(dim_k).__name__!='int':
@@ -96,6 +96,7 @@ class tb_model(object):
         if dim_k < 0 or dim_k > 4:
             raise Exception("\n\nArgument dim_k out of range. Must be between 0 and 4.")
         self._dim_k=dim_k
+        self.soc = soc
 
         # initialize _dim_r = dimensionality of r-space (integer)
         if type(dim_r).__name__!='int':
@@ -311,6 +312,9 @@ class tb_model(object):
         else:
             raise Exception("\n\nWrong value of mode parameter")
         
+        self._site_energies[:, 0, 0] += self.soc
+        self._site_energies[:, 1, 1] -= self.soc
+
     def set_hop(self,hop_amp,ind_i,ind_j,ind_R=None,mode="set",allow_conjugate_pair=False):
         r"""
         
