@@ -311,9 +311,10 @@ class tb_model(object):
                 self._site_energies_specified[:]=True
         else:
             raise Exception("\n\nWrong value of mode parameter")
-        
-        self._site_energies[:, 0, 0] += self.soc
-        self._site_energies[:, 1, 1] -= self.soc
+
+        if self._nspin == 2:
+            self._site_energies[:, 0, 0] += self.soc
+            self._site_energies[:, 1, 1] -= self.soc
 
     def set_hop(self,hop_amp,ind_i,ind_j,ind_R=None,mode="set",allow_conjugate_pair=False):
         r"""
