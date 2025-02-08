@@ -3259,7 +3259,7 @@ class w90(object):
         self.norb = len(orb_pos)
         return lattice, orb_pos
 
-    def model(self,zero_energy=0.0,min_hopping_norm=None,max_distance=None,ignorable_imaginary_part=None):
+    def model(self,zero_energy=0.0,min_hopping_norm=None,max_distance=None,ignorable_imaginary_part=None,soc=0.):
         """
 
         This function returns :class:`pythtb.tb_model` object that can
@@ -3328,7 +3328,7 @@ class w90(object):
         """    
 
         # make the model object
-        tb=tb_model(3,3,self.lat,self.red_cen, nspin=2)
+        tb=tb_model(3,3,self.lat,self.red_cen,nspin=2,soc=soc)
 
         # remember that this model was computed from w90
         tb._assume_position_operator_diagonal=False
